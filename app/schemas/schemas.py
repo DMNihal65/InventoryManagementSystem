@@ -2,11 +2,25 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
+class DepartmentBase(BaseModel):
+    Name: str
+
+class DepartmentCreate(DepartmentBase):
+    pass
+
+class Department(DepartmentBase):
+    DepID: int
+
+    class Config:
+        orm_mode = True
+
+
 class UserBase(BaseModel):
     UserName: str
     Email: str
-    Phone: Optional[str] = None
-    Address: Optional[str] = None
+    Phone: str
+    Address: str
+    DepartmentID: int
 
 class UserCreate(UserBase):
     pass
@@ -71,3 +85,55 @@ class ToolRequest(ToolRequestBase):
 
     class Config:
         orm_mode = True
+
+class RequestDetail(BaseModel):
+    RequestID: int
+    UserID: int
+    UserName: str
+    ToolID: int
+    ToolName: str
+    QuantityNeeded: int
+    PurposeOfUse: str
+    AdditionalComments: Optional[str]
+    RequestDate: datetime
+    Status: str
+
+    class Config:
+        orm_mode = True
+
+
+class InventoryAnalytics(BaseModel):
+    total_tools: int
+    total_requests: int
+    pending_requests: int
+    approved_requests: int
+    rejected_requests: int
+    tools_in_use: int
+    tools_available: int
+
+    class Config:
+        orm_mode = True
+
+
+class DepartmentToolsDistributionData(BaseModel):
+    department: str
+    total_tools: int
+
+class MonthlyToolRequestTrendsData(BaseModel):
+    month: str
+    total_requests: int
+
+class ToolRequestStatusDistributionData(BaseModel):
+    status: str
+    count: int
+
+class ToolUtilizationStatusData(BaseModel):
+    status: str
+    count: int
+
+class DepartmentWiseMetricsData(BaseModel):
+    department: str
+    total_tools: int
+    pending_requests: int
+    approved_requests: int
+    rejected_requests: int

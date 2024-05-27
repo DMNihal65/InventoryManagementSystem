@@ -3,6 +3,11 @@ from sqlalchemy.orm import relationship
 from app.database.database import Base
 
 
+class Department(Base):
+    __tablename__ = "departments"
+    DepID = Column(Integer, primary_key=True, index=True)
+    Name = Column(String, nullable=False)
+
 class User(Base):
     __tablename__ = "users"
     UserID = Column(Integer, primary_key=True, index=True)
@@ -10,10 +15,13 @@ class User(Base):
     Email = Column(String, nullable=False)
     Phone = Column(String)
     Address = Column(String)
+    DepartmentID = Column(Integer, ForeignKey("departments.DepID"))  # Foreign key relationship
 
-    # Relationship with ToolRequest
-    requests = relationship("ToolRequest", back_populates="user")
+    # Relationship with Department
+    department = relationship("Department", backref="users")
 
+    # Relationship with ToolRequest (assuming there's a ToolRequest model)
+    requests = relationship("ToolRequest", back_populates="user")  # Make sure this matches the ToolRequest model
 
 class Tool(Base):
     __tablename__ = "tools"
@@ -42,5 +50,17 @@ class ToolRequest(Base):
     AdminApprovalDate = Column(TIMESTAMP)
 
     # Relationships
-    user = relationship("User", back_populates="requests")
+    user = relationship("User", back_populates="requests")  # Make sure this matches the User model
     tool = relationship("Tool", back_populates="requests")
+
+class InventoryAnalytics(Base):
+    __tablename__ = "inventory_analytics"
+
+    id = Column(Integer, primary_key=True)
+    total_tools = Column(Integer)
+    total_requests = Column(Integer)
+    pending_requests = Column(Integer)
+    approved_requests = Column(Integer)
+    rejected_requests = Column(Integer)
+    tools_in_use = Column(Integer)
+    tools_available = Column(Integer)

@@ -1,12 +1,20 @@
 from http.client import HTTPException
+from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.database.database import SessionLocal, get_db
 from app.schemas.schemas import ToolCreate, ToolUpdate, Tool
 from ..curd.tool_crud import get_tool, create_tool, update_tool
+from app.models.models import Tool as ToolModel  # SQLAlchemy model
+from app.schemas.schemas import Tool as ToolSchema  # Pydantic schema
 
 router = APIRouter()
+
+@router.get("/tools", response_model=List[ToolSchema])
+async def get_all_tools(db: Session = Depends(get_db)):
+    tools = db.query(ToolModel).all()
+    return tools
 
 @router.get("/tools/{tool_id}", response_model=Tool)
 def read_tool(tool_id: int, db: Session = Depends(get_db)):
