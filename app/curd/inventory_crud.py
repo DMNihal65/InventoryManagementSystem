@@ -1,6 +1,9 @@
-from sqlalchemy import func
+from typing import List
+
 from sqlalchemy.orm import Session
-from app.models.models import Tool, ToolRequest, InventoryAnalytics
+from sqlalchemy import func
+from app.models.models import Department, Tool, ToolRequest, InventoryAnalytics
+from app.schemas.schemas import ToolRequestStatusDistribution
 
 
 def get_inventory_analytics(db: Session) -> InventoryAnalytics:
@@ -21,3 +24,18 @@ def get_inventory_analytics(db: Session) -> InventoryAnalytics:
         tools_in_use=tools_in_use,
         tools_available=tools_available
     )
+
+
+
+
+def get_monthly_tool_request_trends(db: Session):
+    monthly_requests = db.query(func.date_trunc('month', ToolRequest.RequestDate).label("month"), func.count(ToolRequest.RequestID)).group_by("month").all()
+    monthly_tool_requests = [{"month": month.strftime("%Y-%m"), "total_requests": count} for month, count in monthly_requests]
+    return monthly_tool_requests
+
+
+def get_tool_request_status_distribution(db: Session) -> List[ToolRequestStatusDistribution]:
+    status_distribution = db.query(ToolRequest.Status, func.count(ToolRequest.RequestID)).group_by(ToolRequest.Status).all()
+    return [{"status": status, "count": count} for status, count in status_distribution]
+
+

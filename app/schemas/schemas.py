@@ -115,25 +115,19 @@ class InventoryAnalytics(BaseModel):
         orm_mode = True
 
 
-class DepartmentToolsDistributionData(BaseModel):
-    department: str
-    total_tools: int
-
-class MonthlyToolRequestTrendsData(BaseModel):
+class MonthlyToolRequests(BaseModel):
     month: str
     total_requests: int
 
-class ToolRequestStatusDistributionData(BaseModel):
+    class Config:
+        orm_mode = True
+
+class ToolRequestStatusDistribution(BaseModel):
     status: str
     count: int
 
-class ToolUtilizationStatusData(BaseModel):
-    status: str
-    count: int
+    class Config:
+        orm_mode = True
 
-class DepartmentWiseMetricsData(BaseModel):
-    department: str
-    total_tools: int
-    pending_requests: int
-    approved_requests: int
-    rejected_requests: int
+
+
