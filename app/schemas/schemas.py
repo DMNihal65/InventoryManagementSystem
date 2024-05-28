@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class DepartmentBase(BaseModel):
@@ -13,7 +13,6 @@ class Department(DepartmentBase):
 
     class Config:
         orm_mode = True
-
 
 class UserBase(BaseModel):
     UserName: str
@@ -101,7 +100,6 @@ class RequestDetail(BaseModel):
     class Config:
         orm_mode = True
 
-
 class InventoryAnalytics(BaseModel):
     total_tools: int
     total_requests: int
@@ -113,7 +111,6 @@ class InventoryAnalytics(BaseModel):
 
     class Config:
         orm_mode = True
-
 
 class MonthlyToolRequests(BaseModel):
     month: str
@@ -129,5 +126,31 @@ class ToolRequestStatusDistribution(BaseModel):
     class Config:
         orm_mode = True
 
+class ToolAvailabilityAndUsage(BaseModel):
+    available: int
+    in_use: int
 
+    class Config:
+        orm_mode = True
 
+class RequestsByDepartment(BaseModel):
+    department_name: str
+    status: str
+    count: int
+
+    class Config:
+        orm_mode = True
+
+class MostRequestedTools(BaseModel):
+    tool_name: str
+    request_count: int
+
+    class Config:
+        orm_mode = True
+
+class ToolsInUseTrends(BaseModel):
+    month: str
+    tools_in_use: int
+
+    class Config:
+        orm_mode = True
