@@ -11,3 +11,7 @@ def create_department(db: Session, department: DepartmentCreate):
     db.commit()
     db.refresh(db_department)
     return db_department
+
+# New function to fetch all departments
+def get_all_departments(db: Session):
+    return db.query(Department).all()

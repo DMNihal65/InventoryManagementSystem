@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.curd.inventory_crud import get_inventory_analytics, get_monthly_tool_request_trends, \
     get_tool_request_status_distribution, fetch_tool_availability_and_usage, fetch_requests_by_department, \
-    fetch_most_requested_tools, fetch_tools_in_use_trends
+    fetch_most_requested_tools
 from app.database.database import get_db
 from app.schemas.schemas import InventoryAnalytics, MonthlyToolRequests, ToolRequestStatusDistribution, ToolAvailabilityAndUsage, RequestsByDepartment, MostRequestedTools, ToolsInUseTrends
 

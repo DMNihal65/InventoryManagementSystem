@@ -1,10 +1,11 @@
 from http.client import HTTPException
+from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.database.database import SessionLocal, get_db
-from app.schemas.schemas import DepartmentCreate, Department
-from ..curd.department_crud import get_department, create_department
+from app.database.database import get_db
+from app.schemas.schemas import Department, DepartmentCreate
+from ..curd.department_crud import get_department, create_department, get_all_departments
 
 router = APIRouter()
 
@@ -18,3 +19,8 @@ def read_department(dep_id: int, db: Session = Depends(get_db)):
 @router.post("/departments/", response_model=Department)
 def create_new_department(department: DepartmentCreate, db: Session = Depends(get_db)):
     return create_department(db=db, department=department)
+
+# New endpoint to fetch all departments with their IDs
+@router.get("/departments/", response_model=List[Department])
+def read_all_departments(db: Session = Depends(get_db)):
+    return get_all_departments(db)

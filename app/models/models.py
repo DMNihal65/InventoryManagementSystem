@@ -23,6 +23,13 @@ class User(Base):
     # Relationship with ToolRequest (assuming there's a ToolRequest model)
     requests = relationship("ToolRequest", back_populates="user")  # Make sure this matches the ToolRequest model
 
+class ToolCategory(Base):
+    __tablename__ = "tool_categories"
+    CategoryID = Column(Integer, primary_key=True, index=True)
+    CategoryName = Column(String, index=True)
+    ParentID = Column(Integer, ForeignKey("tool_categories.CategoryID"), nullable=True)
+    children = relationship("ToolCategory", backref="parent", remote_side=[CategoryID])
+
 class Tool(Base):
     __tablename__ = "tools"
     ToolID = Column(Integer, primary_key=True, index=True)
@@ -31,6 +38,10 @@ class Tool(Base):
     Status = Column(Enum('Available', 'In Use', name='tool_status_enum'), nullable=False)
     Location = Column(String)
     LastUpdated = Column(TIMESTAMP)
+    CategoryID = Column(Integer, ForeignKey("tool_categories.CategoryID"))
+
+    # Relationship with ToolCategory
+    category = relationship("ToolCategory", backref="tools")
 
     # Relationship with ToolRequest
     requests = relationship("ToolRequest", back_populates="tool")

@@ -3,9 +3,11 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.database.database import SessionLocal, get_db
+
+from app.curd.tool_crud import get_tool, create_tool, update_tool
+from app.database.database import get_db
 from app.schemas.schemas import ToolCreate, ToolUpdate, Tool
-from ..curd.tool_crud import get_tool, create_tool, update_tool
+# from app.curd.tool_cat import get_tool, create_tool, update_tool
 from app.models.models import Tool as ToolModel  # SQLAlchemy model
 from app.schemas.schemas import Tool as ToolSchema  # Pydantic schema
 

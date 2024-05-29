@@ -12,7 +12,7 @@ class Department(DepartmentBase):
     DepID: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UserBase(BaseModel):
     UserName: str
@@ -28,13 +28,14 @@ class User(UserBase):
     UserID: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ToolBase(BaseModel):
     ToolName: str
     QuantityAvailable: int
     Status: str
     Location: Optional[str] = None
+    CategoryID: Optional[int] = None  # Added CategoryID
 
 class ToolCreate(ToolBase):
     pass
@@ -43,16 +44,30 @@ class ToolUpdate(BaseModel):
     QuantityAvailable: Optional[int] = None
     Status: Optional[str] = None
     Location: Optional[str] = None
+    CategoryID: Optional[int] = None  # Added CategoryID
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class Tool(ToolBase):
     ToolID: int
     LastUpdated: Optional[datetime]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+class CategoryBase(BaseModel):
+    CategoryName: str
+    ParentID: Optional[int] = None
+
+class CategoryCreate(CategoryBase):
+    pass
+
+class Category(CategoryBase):
+    CategoryID: int
+
+    class Config:
+        from_attributes = True
 
 class ToolRequestBase(BaseModel):
     UserID: int
@@ -77,13 +92,13 @@ class ToolRequestUpdate(BaseModel):
     AdminApprovalDate: Optional[datetime] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ToolRequest(ToolRequestBase):
     RequestID: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class RequestDetail(BaseModel):
     RequestID: int
@@ -98,7 +113,7 @@ class RequestDetail(BaseModel):
     Status: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class InventoryAnalytics(BaseModel):
     total_tools: int
@@ -110,28 +125,28 @@ class InventoryAnalytics(BaseModel):
     tools_available: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class MonthlyToolRequests(BaseModel):
     month: str
     total_requests: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ToolRequestStatusDistribution(BaseModel):
     status: str
     count: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ToolAvailabilityAndUsage(BaseModel):
     available: int
     in_use: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class RequestsByDepartment(BaseModel):
     department_name: str
@@ -139,18 +154,18 @@ class RequestsByDepartment(BaseModel):
     count: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class MostRequestedTools(BaseModel):
     tool_name: str
     request_count: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ToolsInUseTrends(BaseModel):
     month: str
     tools_in_use: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
